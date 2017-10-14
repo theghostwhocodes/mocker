@@ -1,0 +1,9 @@
+{
+  "python.linting.flake8Enabled": true,
+  "python.pythonPath": "/usr/local/bin/python3",
+  "python.linting.pylintEnabled": false,
+  "editor.tabSize": 4,
+  "editor.insertSpaces": true,
+  "editor.trimAutoWhitespace": true,
+  "files.trimTrailingWhitespace": true
+}
