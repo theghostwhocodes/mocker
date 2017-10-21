@@ -8,18 +8,35 @@ def MainRequestHandlerFactory(data_path):
             self.data_path = data_path
             super(BaseHTTPRequestHandler, self).__init__(*args, **kwargs)
 
-        def default_response(self, command, path_):
-            self.send_response(200)
-            self.send_header('Content-Type', 'text/html')
-            self.end_headers()
-
-            file_path = os.path.join(self.data_path, f'{path_[1:]}.{command}.json')
+        def load_mock(self, file_path):
             with open(file_path, 'rb') as f:
-                self.wfile.write(f.read())
+                return f.read()
+
+        def default_response(self, command, path_):
+            file_path = os.path.join(
+                self.data_path,
+                f'{path_[1:]}.{command}.json'
+            )
+
+            mock_exists = os.path.exists(file_path)
+            if mock_exists:
+                self.send_response(200)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                mock_content = self.load_mock(file_path)
+                print(mock_content)
+                self.wfile.write(mock_content)
+            else:
+                self.send_response(404)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(
+                    b'{"message": "The mock for this URL doesn\'t exists"}'
+                )
 
         def do_HEAD(self):
             self.send_response(200)
-            self.send_header("Content-type", "text/html")
+            self.send_header("Content-type", "application/json")
             self.end_headers()
 
         def do_GET(self):
