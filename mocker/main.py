@@ -1,5 +1,6 @@
 import argparse
 from http.server import HTTPServer
+import os
 
 from handlers import MainRequestHandlerFactory
 
@@ -20,11 +21,14 @@ def main():
     parser.add_argument('--host', help='The host', default=HOST)
     args = parser.parse_args()
 
-    server_address = (args.host, args.port)
-    print('Starting mocker HTTP server at {}:{}'.format(*server_address))
-    MainRequestHandler = MainRequestHandlerFactory(args.data_path)
-    httpd = HTTPServer(server_address, MainRequestHandler)
-    httpd.serve_forever()
+    if os.path.exists(args.data_path):
+        server_address = (args.host, args.port)
+        print('Starting mocker HTTP server at {}:{}'.format(*server_address))
+        MainRequestHandler = MainRequestHandlerFactory(args.data_path)
+        httpd = HTTPServer(server_address, MainRequestHandler)
+        httpd.serve_forever()
+    else:
+        print('Folder {} not found'.format(args.data_path))
 
 
 main()
