@@ -24,7 +24,6 @@ def MainRequestHandlerFactory(data_path):
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
                 mock_content = self.load_mock(file_path)
-                print(mock_content)
                 self.wfile.write(mock_content)
             else:
                 self.send_response(404)
