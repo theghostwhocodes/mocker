@@ -1,4 +1,5 @@
 import argparse
+import logging
 from http.server import HTTPServer
 import os
 
@@ -19,7 +20,16 @@ def main():
         default=TCP_PORT,
         type=int)
     parser.add_argument('--host', help='The host', default=HOST)
+    parser.add_argument('-l', '--log-file',
+            help='save log messages in a given file')
+    parser.add_argument('-v', '--verbose',
+            action='store_true',
+            default=False,
+            help='print more detailed log messages')
     args = parser.parse_args()
+
+    logging_level = logging.DEBUG if args.verbose else logging.INFO
+    logging.basicConfig(filename=args.log_file, level=logging_level)
 
     if os.path.exists(args.data_path):
         server_address = (args.host, args.port)
