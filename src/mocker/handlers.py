@@ -1,6 +1,8 @@
 from http.server import BaseHTTPRequestHandler
 import os
 
+import mocker.utils
+
 
 def MainRequestHandlerFactory(data_path):
     class MainRequestHandler(BaseHTTPRequestHandler):
@@ -8,26 +10,19 @@ def MainRequestHandlerFactory(data_path):
             self.data_path = data_path
             super(BaseHTTPRequestHandler, self).__init__(*args, **kwargs)
 
-        def compute_file_path(self):
-            print(self.path, self.command)
-            return os.path.join(
-                self.data_path,
-                f'{self.path[1:]}.{self.command}.json'
-            )
-
-        def load_mock(self, file_path):
-            with open(file_path, 'rb') as f:
-                return f.read()
-
         def default_response(self):
-            file_path = self.compute_file_path()
+            file_path = mocker.utils.compute_file_path(
+                self.data_path,
+                self.path,
+                self.command
+            )
 
             mock_exists = os.path.exists(file_path)
             if mock_exists:
                 self.send_response(200)
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
-                mock_content = self.load_mock(file_path)
+                mock_content = mocker.utils.load_mock(file_path)
                 self.wfile.write(mock_content)
             else:
                 self.send_response(404)

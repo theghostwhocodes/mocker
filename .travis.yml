@@ -1,5 +1,8 @@
 language: python
 python:
   - "3.6"
+install:
+  - pip install pipenv
+  - pip install -e .
 script:
-  - "python -m unittest discover tests \"*_test.py\""
+  - "pipenv run python -m unittest discover tests \"*_test.py\""
