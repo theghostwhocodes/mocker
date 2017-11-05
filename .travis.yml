@@ -3,6 +3,6 @@ python:
   - "3.6"
 install:
   - pip install pipenv
-  - pip install '-e .'
+  - pip install -e .
 script:
   - "pipenv python -m unittest discover tests \"*_test.py\""
