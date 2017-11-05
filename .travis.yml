@@ -5,4 +5,4 @@ install:
   - pip install pipenv
   - pip install -e .
 script:
-  - "pipenv python -m unittest discover tests \"*_test.py\""
+  - "pipenv run python -m unittest discover tests \"*_test.py\""
