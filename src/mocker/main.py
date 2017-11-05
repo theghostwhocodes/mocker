@@ -1,7 +1,8 @@
+from http.server import HTTPServer
 import argparse
 import logging
-from http.server import HTTPServer
 import os
+import pkg_resources
 
 from handlers import MainRequestHandlerFactory
 
@@ -18,14 +19,24 @@ def main():
         '--port',
         help='The TCP port',
         default=TCP_PORT,
-        type=int)
+        type=int
+    )
     parser.add_argument('--host', help='The host', default=HOST)
     parser.add_argument('-l', '--log-file',
-            help='save log messages in a given file')
-    parser.add_argument('-v', '--verbose',
-            action='store_true',
-            default=False,
-            help='print more detailed log messages')
+        help='save log messages in a given file'
+    )
+    parser.add_argument(
+        '-v',
+        '--verbose',
+        action='store_true',
+        default=False,
+        help='print more detailed log messages'
+    )
+    parser.add_argument(
+        '--version',
+        action='version',
+        version=f'Mocker version {pkg_resources.require("mocker")[0].version}'
+    )
     args = parser.parse_args()
 
     logging_level = logging.DEBUG if args.verbose else logging.INFO
