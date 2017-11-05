@@ -1,7 +1,6 @@
 from http.client import HTTPConnection
 from http.server import HTTPServer
 import unittest
-from unittest.mock import MagicMock
 
 from mocker.handlers import MainRequestHandlerFactory
 
