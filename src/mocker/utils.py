@@ -9,7 +9,9 @@ def compute_file_path(data_path, path, command):
     path --  the URL path
     command -- the HTTP verb
     """
-    return os.path.join(
-        data_path,
-        f'{path[1:]}.{command}.json'
+    return os.path.realpath(
+        os.path.join(
+            data_path,
+            f'{path[1:]}.{command}.json'
+        )
     )
