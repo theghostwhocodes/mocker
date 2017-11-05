@@ -1,4 +1,5 @@
 README.md
+setup.py
 src/mocker/__init__.py
 src/mocker/handlers.py
 src/mocker/main.py
