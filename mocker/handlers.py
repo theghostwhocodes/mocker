@@ -8,15 +8,19 @@ def MainRequestHandlerFactory(data_path):
             self.data_path = data_path
             super(BaseHTTPRequestHandler, self).__init__(*args, **kwargs)
 
+        def compute_file_path(self):
+            print(self.path, self.command)
+            return os.path.join(
+                self.data_path,
+                f'{self.path[1:]}.{self.command}.json'
+            )
+
         def load_mock(self, file_path):
             with open(file_path, 'rb') as f:
                 return f.read()
 
-        def default_response(self, command, path_):
-            file_path = os.path.join(
-                self.data_path,
-                f'{path_[1:]}.{command}.json'
-            )
+        def default_response(self):
+            file_path = self.compute_file_path()
 
             mock_exists = os.path.exists(file_path)
             if mock_exists:
@@ -39,18 +43,18 @@ def MainRequestHandlerFactory(data_path):
             self.end_headers()
 
         def do_GET(self):
-            self.default_response(self.command, self.path)
+            self.default_response()
 
         def do_POST(self):
-            self.default_response(self.command, self.path)
+            self.default_response()
 
         def do_PUT(self):
-            self.default_response(self.command, self.path)
+            self.default_response()
 
         def do_PATCH(self):
-            self.default_response(self.command, self.path)
+            self.default_response()
 
         def do_DELETE(self):
-            self.default_response(self.command, self.path)
+            self.default_response()
 
     return MainRequestHandler
