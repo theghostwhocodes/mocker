@@ -4,7 +4,7 @@ import logging
 import os
 import pkg_resources
 
-from handlers import MainRequestHandlerFactory
+from mocker.handlers import MainRequestHandlerFactory
 
 
 TCP_PORT = 8080
@@ -22,7 +22,9 @@ def main():
         type=int
     )
     parser.add_argument('--host', help='The host', default=HOST)
-    parser.add_argument('-l', '--log-file',
+    parser.add_argument(
+        '-l',
+        '--log-file',
         help='save log messages in a given file'
     )
     parser.add_argument(
