@@ -13,3 +13,4 @@ name = "pypi"
 [dev-packages]
 
 pylint = "==1.8.1"
+pyinstaller = "==3.3.1"
