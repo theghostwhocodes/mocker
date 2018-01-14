@@ -11,3 +11,5 @@ name = "pypi"
 
 
 [dev-packages]
+
+pylint = "==1.8.1"
