@@ -5,9 +5,9 @@ block_cipher = None
 
 a = Analysis(['src/main.py'],
              pathex=[
-                 '/Users/paolo/Projects/personal/mocker',
-                 '/Users/paolo/Projects/personal/mocker/src',
-                 '/Users/paolo/Projects/personal/mocker/src/mocker',
+                 'mocker',
+                 'mocker/src',
+                 'mocker/src/mocker',
                 ],
              binaries=[],
              datas=[],
@@ -34,4 +34,4 @@ coll = COLLECT(exe,
                a.datas,
                strip=False,
                upx=True,
-               name='main')
+               name='mocker')
