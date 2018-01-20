@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a44a06f6393c39de97ba2a5e7ed8c3ea98e8a4b85a9a291e8d6000c578535098"
+            "sha256": "c3d0839cbde5200f6191f45586b7b4f9b2ea4f637db1ed6567b49dea633cb310"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -33,12 +33,25 @@
         }
     },
     "develop": {
+        "altgraph": {
+            "hashes": [
+                "sha256:49dc134049903cc73fb76ca3cc9bef5b2b8c01c28732dd29594f99af2b449fc5",
+                "sha256:fc28b986a68fde8d3ff0e6d6ba3fbdd2cd562d11d45ef7c7735fbd826c9eec2e"
+            ],
+            "version": "==0.15"
+        },
         "astroid": {
             "hashes": [
                 "sha256:badf6917ef7eb0ade0ea6eae347aed1e3f8f4c9375a02916f5cc450b3c8a64c0",
                 "sha256:71dadba2110008e2c03f9fde662ddd2053db3c0489d0e03c94e828a0399edd4f"
             ],
             "version": "==1.6.0"
+        },
+        "future": {
+            "hashes": [
+                "sha256:e39ced1ab767b5936646cedba8bcce582398233d6a627067d4c6a454c90cfedb"
+            ],
+            "version": "==0.16.0"
         },
         "isort": {
             "hashes": [
@@ -81,12 +94,31 @@
             ],
             "version": "==1.3.1"
         },
+        "macholib": {
+            "hashes": [
+                "sha256:7f76a7ef4f58f85889dec25fb532bad5acfd461c444738dfeb2e7bf855d5906b",
+                "sha256:9aeec52d7da59912b15445d08b08d95cee48414f01dd035be06f04a825973c08"
+            ],
+            "version": "==1.9"
+        },
         "mccabe": {
             "hashes": [
                 "sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42",
                 "sha256:dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"
             ],
             "version": "==0.6.1"
+        },
+        "pefile": {
+            "hashes": [
+                "sha256:675c35ee0e1677db9e80d2f48d8a7ff2cf38e6207e8cd5e2a2c6d126db025854"
+            ],
+            "version": "==2017.11.5"
+        },
+        "pyinstaller": {
+            "hashes": [
+                "sha256:715f81f24b1ef0e5fe3b3c71e7540551838e46e9de30882aa7c0a521147fd1ce"
+            ],
+            "version": "==3.3.1"
         },
         "pylint": {
             "hashes": [

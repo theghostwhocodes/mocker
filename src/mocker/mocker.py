@@ -53,5 +53,5 @@ def main():
     else:
         print('Folder {} not found'.format(args.data_path))
 
-
-main()
+if __name__ == '__main__':
+    main()
