@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['src/mocker/main.py'],
+a = Analysis(['src/main.py'],
              pathex=[
                  '/Users/paolo/Projects/personal/mocker',
                  '/Users/paolo/Projects/personal/mocker/src',
