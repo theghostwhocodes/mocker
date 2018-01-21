@@ -23,4 +23,4 @@ class TestUtils(unittest.TestCase):
         command = 'GET'
         file_path = mocker.utils.compute_file_path(data_path, path, command)
         content = mocker.utils.load_mock(file_path)
-        self.assertEqual(content, b'{\n    "key": "value"\n}\n')
+        self.assertEqual(content, '{"key": "value"}')

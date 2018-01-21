@@ -1,6 +1,7 @@
 # coding: utf-8
 """Utility module for Mocker"""
 
+import json
 import os
 
 
@@ -21,6 +22,16 @@ def compute_file_path(data_path, path, command):
 
 
 def load_mock(file_path):
-    """Return the content of the mock file"""
+    """Return the content of the mock file trying to validate JSON
+    
+    Raises:
+    json.JSONDecodeError
+    IOError
+    """
     with open(file_path, 'rb') as f:
-        return f.read()
+        try:
+            json_decoded = json.load(f)
+            json_decoded_string = json.dumps(json_decoded)
+        except json.JSONDecodeError as e:
+            raise json.JSONDecodeError(e.msg, e.doc, e.pos)
+        return json_decoded_string

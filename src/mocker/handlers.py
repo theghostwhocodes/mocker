@@ -2,6 +2,7 @@
 """Mocker handlers module"""
 
 from http.server import BaseHTTPRequestHandler
+import json
 import os
 
 import mocker.utils
@@ -27,11 +28,22 @@ def MainRequestHandlerFactory(data_path):
 
             mock_exists = os.path.exists(file_path)
             if mock_exists:
-                self.send_response(200)
-                self.send_header('Content-Type', 'application/json')
-                self.end_headers()
-                mock_content = mocker.utils.load_mock(file_path)
-                self.wfile.write(mock_content)
+                try:
+                    content = mocker.utils.load_mock(file_path).encode('utf-8')
+                    self.send_response(200)
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                except IOError:
+                    self.send_response(500)
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    content = b'{"message": "Mocker encountered an error while opening the file"}'
+                except json.JSONDecodeError:
+                    self.send_response(500)
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    content = b'{"message": "Mock file is not a valid JSON"}'
+                self.wfile.write(content)
             else:
                 self.send_response(404)
                 self.send_header('Content-Type', 'application/json')
