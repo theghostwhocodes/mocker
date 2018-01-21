@@ -2,7 +2,6 @@ language: python
 python:
   - "3.6"
 install:
-  - pip install pipenv
-  - pip install -e .
+  - pip install tox
 script:
-  - "pipenv run python -m unittest discover tests \"*_test.py\""
+  - tox
