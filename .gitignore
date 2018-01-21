@@ -1,7 +1,9 @@
 .vscode
 *.pyc
+src/*.egg-info
 build
 dist
 .tox
 .coverage*
 htmlcov
+.cache

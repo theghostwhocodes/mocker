@@ -1,3 +1,6 @@
+# coding: utf-8
+"""Utility module for Mocker"""
+
 import os
 
 
@@ -18,7 +21,6 @@ def compute_file_path(data_path, path, command):
 
 
 def load_mock(file_path):
-    """Return the content of the mock file
-    """
+    """Return the content of the mock file"""
     with open(file_path, 'rb') as f:
         return f.read()

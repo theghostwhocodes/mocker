@@ -1,3 +1,6 @@
+# coding: utf-8
+"""Mocker main module"""
+
 from http.server import HTTPServer
 import argparse
 import logging
@@ -12,6 +15,7 @@ HOST = '127.0.0.1'
 
 
 def main():
+    """Mocker startup function"""
     parser = argparse.ArgumentParser(description='HTTP data mocker')
     parser.add_argument('data_path', help='The data folder')
     parser.add_argument(
