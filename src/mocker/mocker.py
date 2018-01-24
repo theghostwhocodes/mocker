@@ -53,7 +53,10 @@ def main():
         print('Starting mocker HTTP server at {}:{}'.format(*server_address))
         MainRequestHandler = MainRequestHandlerFactory(args.data_path)
         httpd = HTTPServer(server_address, MainRequestHandler)
-        httpd.serve_forever()
+        try:
+            httpd.serve_forever()
+        except KeyboardInterrupt:
+            print("Exiting Mocker...")
     else:
         print('Folder {} not found'.format(args.data_path))
 
