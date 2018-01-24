@@ -1,9 +1,9 @@
 # coding: utf-8
 """Mocker handlers module"""
 
-from http.server import BaseHTTPRequestHandler
 import json
 import os
+from http.server import BaseHTTPRequestHandler
 
 import mocker.utils
 
@@ -11,6 +11,7 @@ import mocker.utils
 def MainRequestHandlerFactory(data_path):
     """Main request handler factory is an utility method that takes some
     variables, inject them to a BaseHTTPRequestHandler and return that handler"""
+
     class MainRequestHandler(BaseHTTPRequestHandler):
         """This is the main http request handler"""
 
@@ -29,7 +30,7 @@ def MainRequestHandlerFactory(data_path):
             mock_exists = os.path.exists(file_path)
             if mock_exists:
                 try:
-                    content = mocker.utils.load_mock(file_path).encode('utf-8')
+                    content = mocker.utils.load_mock(file_path)
                     self.send_response(200)
                     self.send_header('Content-Type', 'application/json')
                     self.end_headers()
@@ -37,20 +38,25 @@ def MainRequestHandlerFactory(data_path):
                     self.send_response(500)
                     self.send_header('Content-Type', 'application/json')
                     self.end_headers()
-                    content = b'{"message": "Mocker encountered an error while opening the file"}'
+                    content = {
+                        "message": "Mocker encountered an error while opening the file"
+                    }
                 except json.JSONDecodeError:
                     self.send_response(500)
                     self.send_header('Content-Type', 'application/json')
                     self.end_headers()
-                    content = b'{"message": "Mock file is not a valid JSON"}'
-                self.wfile.write(content)
+                    content = {
+                        "message": "Mock file is not a valid JSON"
+                    }
+                self.wfile.write(json.dumps(content).encode('utf-8'))
             else:
                 self.send_response(404)
                 self.send_header('Content-Type', 'application/json')
                 self.end_headers()
-                self.wfile.write(
-                    b'{"message": "The mock for this URL doesn\'t exists"}'
-                )
+                content = {
+                    "message": "The mock for this URL doesn\'t exists"
+                }
+                self.wfile.write(json.dumps(content).encode('utf-8'))
 
         def do_HEAD(self):
             """Handles HTTP HEAD verb"""

@@ -31,7 +31,6 @@ def load_mock(file_path):
     with open(file_path, 'rb') as f:
         try:
             json_decoded = json.load(f)
-            json_decoded_string = json.dumps(json_decoded)
+            return json_decoded
         except json.JSONDecodeError as e:
             raise json.JSONDecodeError(e.msg, e.doc, e.pos)
-        return json_decoded_string
