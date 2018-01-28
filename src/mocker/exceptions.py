@@ -4,6 +4,7 @@
 
 class JSONKeyMissingException(Exception):
     """Exception to raise when there is a missing required key in mock file"""
-    
-    def __init__(self, *args, **kwargs):
+
+    def __init__(self, message, *args, **kwargs):
         super().__init__(self, *args, **kwargs)
+        self.message = message
