@@ -7,7 +7,7 @@ import logging
 import os
 import pkg_resources
 
-from mocker.handlers import MainRequestHandlerFactory
+from mocker.http_handlers import MainRequestHandlerFactory
 
 
 TCP_PORT = 8080

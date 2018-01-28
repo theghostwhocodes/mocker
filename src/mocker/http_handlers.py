@@ -8,7 +8,6 @@ from http.server import BaseHTTPRequestHandler
 from mocker.exceptions import JSONKeyMissingException
 
 
-
 def MainRequestHandlerFactory(data_path):
     """Main request handler factory is an utility method that takes some
     variables, inject them to a BaseHTTPRequestHandler and return that handler"""
