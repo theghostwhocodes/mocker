@@ -38,8 +38,9 @@ def MainRequestHandlerFactory(data_path):
                         )
                     
                     content = response_loaded['body']
+                    http_status = response_loaded.get('status', 200)
 
-                    self.send_response(200)
+                    self.send_response(http_status)
                     self.send_header('Content-Type', 'application/json')
                     self.end_headers()
                 except IOError:
