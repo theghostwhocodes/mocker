@@ -1,5 +1,6 @@
 {
   "response": {
+    "status": 200,
     "body": {
       "key": "value in new format"
     }
