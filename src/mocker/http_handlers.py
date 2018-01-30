@@ -2,22 +2,42 @@
 """Mocker handlers module"""
 
 import json
-import mocker.utils
 import os
 from http.server import BaseHTTPRequestHandler
+import pkg_resources
+import mocker.utils
 from mocker.exceptions import JSONKeyMissingException
+
+
+__version__ = pkg_resources.require("mocker")[0].version
 
 
 def MainRequestHandlerFactory(data_path):
     """Main request handler factory is an utility method that takes some
     variables, inject them to a BaseHTTPRequestHandler and return that handler"""
 
+
     class MainRequestHandler(BaseHTTPRequestHandler):
         """This is the main http request handler"""
+        
+        server_version = "Mocker/" + __version__
 
         def __init__(self, *args, **kwargs):
             self.data_path = data_path
             super().__init__(*args, **kwargs)
+        
+        def send_response(self, code, message=None):
+            """Add the response header to the headers buffer and log the
+            response code.
+
+            Also send two standard headers with the server software
+            version and the current date.
+
+            """
+            self.log_request(code)
+            self.send_response_only(code, message)
+            # self.send_header('Server', self.version_string())
+            # self.send_header('Date', self.date_time_string())
 
         def default_response(self):
             """Handles the default response"""
@@ -39,9 +59,20 @@ def MainRequestHandlerFactory(data_path):
                     
                     content = response_loaded['body']
                     http_status = response_loaded.get('status', 200)
+                    headers = response_loaded.get('headers', {})
 
                     self.send_response(http_status)
-                    self.send_header('Content-Type', 'application/json')
+
+                    for key, value in headers.items():
+                        self.send_header(key, value)
+                    
+                    if 'content-type' not in [key.lower() for key in headers]:
+                        self.send_header('Content-Type', 'application/json')
+                    if 'server' not in [key.lower() for key in headers]:
+                        self.send_header('Server', self.version_string())
+                    if 'date' not in [key.lower() for key in headers]:
+                        self.send_header('Date', self.date_time_string())
+
                     self.end_headers()
                 except IOError:
                     self.send_response(500)
