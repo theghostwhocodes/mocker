@@ -167,3 +167,19 @@ class TestHttpHandlers(unittest.TestCase):
 
         connection.close()
         self.httpd.server_close()
+
+    def test_mock_exists_custom_server_header(self):
+        connection = HTTPConnection(*self.SERVER_ADDRESS)
+        connection.request('GET', '/test-custom-server-header')
+        self.httpd.handle_request()
+        response = connection.getresponse()
+
+        self.assertEqual(response.status, 200)
+        self.assertEqual(response.reason, 'OK')
+
+        headers = response.getheaders()
+        self.assertEqual(headers[1][0], 'Server')
+        self.assertIn('MockerCustom', headers[1][1])
+        
+        connection.close()
+        self.httpd.server_close()
