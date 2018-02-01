@@ -74,13 +74,6 @@ def MainRequestHandlerFactory(data_path):
                         self.send_header('Date', self.date_time_string())
 
                     self.end_headers()
-                except IOError:
-                    self.send_response(500)
-                    self.send_header('Content-Type', 'application/json')
-                    self.end_headers()
-                    content = {
-                        "message": "Mocker encountered an error while opening the file"
-                    }
                 except json.JSONDecodeError:
                     self.send_response(500)
                     self.send_header('Content-Type', 'application/json')
