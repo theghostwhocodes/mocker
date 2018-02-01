@@ -108,7 +108,8 @@ def MainRequestHandlerFactory(data_path):
         def do_HEAD(self):
             """Handles HTTP HEAD verb"""
             self.send_response(200)
-            self.send_header("Content-type", "application/json")
+            self.send_header("Content-Type", "application/json")
+            self.send_header('Server', self.version_string())
             self.send_header('Date', self.date_time_string())
             self.end_headers()
 
