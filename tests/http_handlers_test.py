@@ -21,8 +21,16 @@ class TestHttpHandlers(unittest.TestCase):
         connection.request('GET', '/test')
         self.httpd.handle_request()
         response = connection.getresponse()
+
         self.assertEqual(response.status, 200)
         self.assertEqual(response.reason, 'OK')
+
+        headers = response.getheaders()
+        self.assertEqual(headers[0][0], 'Content-Type')
+        self.assertEqual(headers[0][1], 'application/json')
+        self.assertEqual(headers[1][0], 'Server')
+        self.assertIn('Mocker/', headers[1][1])
+
         connection.close()
         self.httpd.server_close()
     
@@ -38,6 +46,8 @@ class TestHttpHandlers(unittest.TestCase):
         headers = response.getheaders()
         self.assertEqual(headers[0][0], 'Content-Type')
         self.assertEqual(headers[0][1], 'application/json')
+        self.assertEqual(headers[1][0], 'Server')
+        self.assertIn('Mocker/', headers[1][1])
         connection.close()
         self.httpd.server_close()
     
@@ -53,6 +63,8 @@ class TestHttpHandlers(unittest.TestCase):
         headers = response.getheaders()
         self.assertEqual(headers[0][0], 'Content-Type')
         self.assertEqual(headers[0][1], 'application/json')
+        self.assertEqual(headers[1][0], 'Server')
+        self.assertIn('Mocker/', headers[1][1])
 
         response_json = json.loads(response.read().decode('utf-8'))
         self.assertDictEqual(
@@ -76,6 +88,8 @@ class TestHttpHandlers(unittest.TestCase):
         headers = response.getheaders()
         self.assertEqual(headers[0][0], 'Content-Type')
         self.assertEqual(headers[0][1], 'application/json')
+        self.assertEqual(headers[1][0], 'Server')
+        self.assertIn('Mocker/', headers[1][1])
 
         response_json = json.loads(response.read().decode('utf-8'))
         self.assertDictEqual(
@@ -84,5 +98,39 @@ class TestHttpHandlers(unittest.TestCase):
                 'message': 'Mock file is not a valid JSON'
             }
         )
+        connection.close()
+        self.httpd.server_close()
+    
+    def test_mock_exists_no_content_type(self):
+        connection = HTTPConnection(*self.SERVER_ADDRESS)
+        connection.request('GET', '/test-no-content-type')
+        self.httpd.handle_request()
+        response = connection.getresponse()
+
+        self.assertEqual(response.status, 200)
+        self.assertEqual(response.reason, 'OK')
+
+        headers = response.getheaders()
+        self.assertEqual(headers[0][0], 'Content-Type')
+        self.assertEqual(headers[0][1], 'application/json')
+        self.assertEqual(headers[1][0], 'Server')
+        self.assertIn('Mocker/', headers[1][1])
+
+        connection.close()
+        self.httpd.server_close()
+    
+    def test_mock_exists_no_server_header(self):
+        connection = HTTPConnection(*self.SERVER_ADDRESS)
+        connection.request('GET', '/test-no-server-header')
+        self.httpd.handle_request()
+        response = connection.getresponse()
+
+        self.assertEqual(response.status, 200)
+        self.assertEqual(response.reason, 'OK')
+
+        headers = response.getheaders()
+        self.assertEqual(headers[1][0], 'Server')
+        self.assertIn('Mocker/', headers[1][1])
+        
         connection.close()
         self.httpd.server_close()

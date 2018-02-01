@@ -34,8 +34,7 @@ class TestUtils(unittest.TestCase):
                         'key': 'value in new format'
                     },
                     'headers': {
-                        'Content-Type': 'application/json',
-                        'Server': 'Mocker'
+                        'Content-Type': 'application/json'
                     },
                     'status': 200
                 }

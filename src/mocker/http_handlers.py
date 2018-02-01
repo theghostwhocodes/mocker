@@ -77,6 +77,8 @@ def MainRequestHandlerFactory(data_path):
                 except json.JSONDecodeError:
                     self.send_response(500)
                     self.send_header('Content-Type', 'application/json')
+                    self.send_header('Server', self.version_string())
+                    self.send_header('Date', self.date_time_string())
                     self.end_headers()
                     content = {
                         "message": "Mock file is not a valid JSON"
@@ -84,6 +86,8 @@ def MainRequestHandlerFactory(data_path):
                 except JSONKeyMissingException as exc:
                     self.send_response(500)
                     self.send_header('Content-Type', 'application/json')
+                    self.send_header('Server', self.version_string())
+                    self.send_header('Date', self.date_time_string())
                     self.end_headers()
                     content = {
                         "message": exc.message
@@ -93,6 +97,8 @@ def MainRequestHandlerFactory(data_path):
             else:
                 self.send_response(404)
                 self.send_header('Content-Type', 'application/json')
+                self.send_header('Server', self.version_string())
+                self.send_header('Date', self.date_time_string())
                 self.end_headers()
                 content = {
                     "message": "The mock for this URL doesn\'t exists"
@@ -103,6 +109,7 @@ def MainRequestHandlerFactory(data_path):
             """Handles HTTP HEAD verb"""
             self.send_response(200)
             self.send_header("Content-type", "application/json")
+            self.send_header('Date', self.date_time_string())
             self.end_headers()
 
         def do_GET(self):

@@ -2,7 +2,6 @@
   "response": {
     "status": 200,
     "headers": {
-      "Content-Type": "application/json"
     },
     "body": {
       "key": "value in new format"
