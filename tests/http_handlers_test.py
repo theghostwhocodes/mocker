@@ -183,3 +183,19 @@ class TestHttpHandlers(unittest.TestCase):
         
         connection.close()
         self.httpd.server_close()
+    
+    def test_mock_exists_custom_date_header(self):
+        connection = HTTPConnection(*self.SERVER_ADDRESS)
+        connection.request('GET', '/test-custom-date-header')
+        self.httpd.handle_request()
+        response = connection.getresponse()
+
+        self.assertEqual(response.status, 200)
+        self.assertEqual(response.reason, 'OK')
+
+        headers = response.getheaders()
+        self.assertEqual(headers[1][0], 'Date')
+        self.assertIn('20180201', headers[1][1])
+        
+        connection.close()
+        self.httpd.server_close()
