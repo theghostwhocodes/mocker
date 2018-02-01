@@ -149,3 +149,21 @@ class TestHttpHandlers(unittest.TestCase):
         
         connection.close()
         self.httpd.server_close()
+
+    def test_mock_exists_custom_content_type(self):
+        connection = HTTPConnection(*self.SERVER_ADDRESS)
+        connection.request('GET', '/test-custom-content-type')
+        self.httpd.handle_request()
+        response = connection.getresponse()
+
+        self.assertEqual(response.status, 200)
+        self.assertEqual(response.reason, 'OK')
+
+        headers = response.getheaders()
+        self.assertEqual(headers[0][0], 'Content-Type')
+        self.assertEqual(headers[0][1], 'application/mocker')
+        self.assertEqual(headers[1][0], 'Server')
+        self.assertIn('Mocker/', headers[1][1])
+
+        connection.close()
+        self.httpd.server_close()
