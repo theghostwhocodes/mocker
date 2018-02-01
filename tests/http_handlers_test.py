@@ -63,3 +63,26 @@ class TestHttpHandlers(unittest.TestCase):
         )
         connection.close()
         self.httpd.server_close()
+    
+    def test_mock_exists_but_invalid_json(self):
+        connection = HTTPConnection(*self.SERVER_ADDRESS)
+        connection.request('GET', '/test-invalid-json')
+        self.httpd.handle_request()
+        response = connection.getresponse()
+        
+        self.assertEqual(response.status, 500)
+        self.assertEqual(response.reason, 'Internal Server Error')
+
+        headers = response.getheaders()
+        self.assertEqual(headers[0][0], 'Content-Type')
+        self.assertEqual(headers[0][1], 'application/json')
+
+        response_json = json.loads(response.read().decode('utf-8'))
+        self.assertDictEqual(
+            response_json,
+            {
+                'message': 'Mock file is not a valid JSON'
+            }
+        )
+        connection.close()
+        self.httpd.server_close()
