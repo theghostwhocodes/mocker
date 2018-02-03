@@ -1,7 +1,6 @@
 matrix:
   include:
     - language: python
-      os: linux
       python:
         - "3.6"
     - language: generic
