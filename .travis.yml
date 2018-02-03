@@ -20,11 +20,11 @@ before_deploy:
   - pipenv install
   - pipenv install -d
   - pipenv run pyinstaller main.spec
-  - tar cvzf mocker.tar.gz dist/mocker/*
+  - tar cvzf mocker-${TRAVIS_TAG}-${TRAVIS_OS_NAME}.tar.gz dist/mocker/*
 deploy:
   provider: releases
   api_key: ${GH_TOKEN}
-  file: "./mocker.tar.gz"
+  file: "./mocker*.tar.gz"
   skip_cleanup: true
   on:
     tags: true
