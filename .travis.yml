@@ -20,8 +20,7 @@ before_deploy:
   - pipenv install
   - pipenv install -d
   - pipenv run pyinstaller main.spec
-  - cd dist/mocker
-  - tar cvzf mocker-${TRAVIS_TAG}-${TRAVIS_OS_NAME}.tar.gz .
+  - tar -C dist/mocker -cvzf mocker-${TRAVIS_TAG}-${TRAVIS_OS_NAME}.tar.gz .
 deploy:
   provider: releases
   api_key: ${GH_TOKEN}
