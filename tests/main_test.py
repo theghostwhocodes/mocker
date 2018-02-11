@@ -2,12 +2,12 @@ from http.client import HTTPConnection
 from http.server import HTTPServer
 import unittest
 
-from mocker.handlers import MainRequestHandlerFactory
+from mocker.http_handlers import MainRequestHandlerFactory
 
 
 class TestMainRequestHandler(unittest.TestCase):
     def setUp(self):
-        self.DATA_PATH = './data'
+        self.DATA_PATH = './tests/data'
         self.HOST = '127.0.0.1'
         self.PORT = 8000
         self.SERVER_ADDRESS = (self.HOST, self.PORT)
@@ -16,7 +16,7 @@ class TestMainRequestHandler(unittest.TestCase):
 
     def test_basic_url_working(self):
         connection = HTTPConnection(*self.SERVER_ADDRESS)
-        connection.request('GET', '/prova')
+        connection.request('GET', '/test')
         self.httpd.handle_request()
         response = connection.getresponse()
         self.assertEqual(response.status, 200)

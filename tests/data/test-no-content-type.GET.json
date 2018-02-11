@@ -1,0 +1,10 @@
+{
+  "response": {
+    "status": 200,
+    "headers": {
+    },
+    "body": {
+      "key": "value in new format"
+    }
+  }
+}

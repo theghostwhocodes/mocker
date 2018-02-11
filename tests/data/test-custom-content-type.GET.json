@@ -1,0 +1,11 @@
+{
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/mocker"
+    },
+    "body": {
+      "key": "value in new format"
+    }
+  }
+}

@@ -1,10 +1,13 @@
+# coding: utf-8
+"""Mocker main module"""
+
 from http.server import HTTPServer
 import argparse
 import logging
 import os
 import pkg_resources
 
-from mocker.handlers import MainRequestHandlerFactory
+from mocker.http_handlers import MainRequestHandlerFactory
 
 
 TCP_PORT = 8080
@@ -12,6 +15,7 @@ HOST = '127.0.0.1'
 
 
 def main():
+    """Mocker startup function"""
     parser = argparse.ArgumentParser(description='HTTP data mocker')
     parser.add_argument('data_path', help='The data folder')
     parser.add_argument(
@@ -49,9 +53,12 @@ def main():
         print('Starting mocker HTTP server at {}:{}'.format(*server_address))
         MainRequestHandler = MainRequestHandlerFactory(args.data_path)
         httpd = HTTPServer(server_address, MainRequestHandler)
-        httpd.serve_forever()
+        try:
+            httpd.serve_forever()
+        except KeyboardInterrupt:
+            print("Exiting Mocker...")
     else:
         print('Folder {} not found'.format(args.data_path))
 
-
-main()
+if __name__ == '__main__':
+    main()

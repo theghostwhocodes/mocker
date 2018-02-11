@@ -1,0 +1,12 @@
+{
+  "resp": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json",
+      "Server": "Mocker"
+    },
+    "body": {
+      "key": "value in new format"
+    }
+  }
+}

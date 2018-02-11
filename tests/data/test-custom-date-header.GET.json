@@ -1,0 +1,12 @@
+{
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json",
+      "Date": "20180201"
+    },
+    "body": {
+      "key": "value in new format"
+    }
+  }
+}

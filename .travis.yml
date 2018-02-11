@@ -1,8 +1,30 @@
 language: python
 python:
   - "3.6"
+matrix:
+  include:
+    - os: linux
+    - language: generic
+      os: osx
+      before_install:
+        - brew update
+        - brew install python3
+        - virtualenv env -p python3
+        - source env/bin/activate
 install:
-  - pip install pipenv
-  - pip install -e .
+  - pip install tox
 script:
-  - "pipenv run python -m unittest discover tests \"*_test.py\""
+  - tox
+before_deploy:
+  - pip install pipenv
+  - pipenv install
+  - pipenv install -d
+  - pipenv run pyinstaller main.spec
+  - tar -C dist/mocker -cvzf mocker-${TRAVIS_TAG}-${TRAVIS_OS_NAME}.tar.gz .
+deploy:
+  provider: releases
+  api_key: ${GH_TOKEN}
+  file: "mocker-${TRAVIS_TAG}-${TRAVIS_OS_NAME}.tar.gz"
+  skip_cleanup: true
+  on:
+    tags: true
