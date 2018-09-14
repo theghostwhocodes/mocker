@@ -43,9 +43,14 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'mocker=main:main'
+            'mocker=main:main',
+            'mocker_async=main_async:main',
         ]
     },
-    install_requires=[],
+    install_requires=[
+        'aiohttp==3.4.4',
+        'cchardet==2.1.1',
+        'aiodns==1.1.1',
+    ],
     extras_require={},
 )

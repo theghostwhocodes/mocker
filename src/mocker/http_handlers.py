@@ -19,13 +19,13 @@ def MainRequestHandlerFactory(data_path):
 
     class MainRequestHandler(BaseHTTPRequestHandler):
         """This is the main http request handler"""
-        
+
         server_version = "Mocker/" + __version__
 
         def __init__(self, *args, **kwargs):
             self.data_path = data_path
             super().__init__(*args, **kwargs)
-        
+
         def send_response(self, code, message=None):
             """Add the response header to the headers buffer and log the
             response code.
@@ -56,7 +56,7 @@ def MainRequestHandlerFactory(data_path):
                         raise JSONKeyMissingException(
                             message='You must specify a "response" key in your mock'
                         )
-                    
+
                     content = response_loaded['body']
                     http_status = response_loaded.get('status', 200)
                     headers = response_loaded.get('headers', {})
@@ -65,7 +65,7 @@ def MainRequestHandlerFactory(data_path):
 
                     for key, value in headers.items():
                         self.send_header(key, value)
-                    
+
                     if 'content-type' not in [key.lower() for key in headers]:
                         self.send_header('Content-Type', 'application/json')
                     if 'server' not in [key.lower() for key in headers]:
@@ -92,7 +92,7 @@ def MainRequestHandlerFactory(data_path):
                     content = {
                         "message": exc.message
                     }
-                
+
                 self.wfile.write(json.dumps(content).encode('utf-8'))
             else:
                 self.send_response(404)
