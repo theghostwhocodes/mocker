@@ -8,3 +8,5 @@ dist
 htmlcov
 .cache
 docs/_build
+.idea
+.pytest_cache
