@@ -44,7 +44,6 @@ setup(
     entry_points={
         'console_scripts': [
             'mocker=main:main',
-            'mocker_async=main_async:main',
         ]
     },
     install_requires=[
