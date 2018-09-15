@@ -7,7 +7,7 @@ from mocker.http_handlers import MainRequestHandlerFactory
 
 
 class TestHttpHandlers(unittest.TestCase):
-    
+
     def setUp(self):
         self.DATA_PATH = './tests/data'
         self.HOST = '127.0.0.1'
@@ -15,7 +15,7 @@ class TestHttpHandlers(unittest.TestCase):
         self.SERVER_ADDRESS = (self.HOST, self.PORT)
         MainRequestHandler = MainRequestHandlerFactory(self.DATA_PATH)
         self.httpd = HTTPServer(self.SERVER_ADDRESS, MainRequestHandler)
-    
+
     def test_mock_exists(self):
         connection = HTTPConnection(*self.SERVER_ADDRESS)
         connection.request('GET', '/test')
@@ -33,7 +33,7 @@ class TestHttpHandlers(unittest.TestCase):
 
         connection.close()
         self.httpd.server_close()
-    
+
     def test_mock_exists_head(self):
         connection = HTTPConnection(*self.SERVER_ADDRESS)
         connection.request('HEAD', '/test')
@@ -52,7 +52,7 @@ class TestHttpHandlers(unittest.TestCase):
 
         connection.close()
         self.httpd.server_close()
-    
+
     def test_mock_exists_post(self):
         connection = HTTPConnection(*self.SERVER_ADDRESS)
         connection.request('POST', '/test')
@@ -71,7 +71,7 @@ class TestHttpHandlers(unittest.TestCase):
 
         connection.close()
         self.httpd.server_close()
-    
+
     def test_mock_exists_put(self):
         connection = HTTPConnection(*self.SERVER_ADDRESS)
         connection.request('PUT', '/test')
@@ -90,7 +90,7 @@ class TestHttpHandlers(unittest.TestCase):
 
         connection.close()
         self.httpd.server_close()
-    
+
     def test_mock_exists_patch(self):
         connection = HTTPConnection(*self.SERVER_ADDRESS)
         connection.request('PATCH', '/test')
@@ -109,7 +109,7 @@ class TestHttpHandlers(unittest.TestCase):
 
         connection.close()
         self.httpd.server_close()
-    
+
     def test_mock_exists_delete(self):
         connection = HTTPConnection(*self.SERVER_ADDRESS)
         connection.request('DELETE', '/test')
@@ -128,16 +128,16 @@ class TestHttpHandlers(unittest.TestCase):
 
         connection.close()
         self.httpd.server_close()
-    
+
     def test_mock_does_not_exists(self):
         connection = HTTPConnection(*self.SERVER_ADDRESS)
         connection.request('GET', '/test-not-exists')
         self.httpd.handle_request()
         response = connection.getresponse()
-        
+
         self.assertEqual(response.status, 404)
         self.assertEqual(response.reason, 'Not Found')
-        
+
         headers = response.getheaders()
         self.assertEqual(headers[0][0], 'Content-Type')
         self.assertEqual(headers[0][1], 'application/json')
@@ -145,13 +145,13 @@ class TestHttpHandlers(unittest.TestCase):
         self.assertIn('Mocker/', headers[1][1])
         connection.close()
         self.httpd.server_close()
-    
+
     def test_mock_exists_with_no_response_key(self):
         connection = HTTPConnection(*self.SERVER_ADDRESS)
         connection.request('GET', '/test-no-response')
         self.httpd.handle_request()
         response = connection.getresponse()
-        
+
         self.assertEqual(response.status, 500)
         self.assertEqual(response.reason, 'Internal Server Error')
 
@@ -170,13 +170,13 @@ class TestHttpHandlers(unittest.TestCase):
         )
         connection.close()
         self.httpd.server_close()
-    
+
     def test_mock_exists_but_invalid_json(self):
         connection = HTTPConnection(*self.SERVER_ADDRESS)
         connection.request('GET', '/test-invalid-json')
         self.httpd.handle_request()
         response = connection.getresponse()
-        
+
         self.assertEqual(response.status, 500)
         self.assertEqual(response.reason, 'Internal Server Error')
 
@@ -195,7 +195,7 @@ class TestHttpHandlers(unittest.TestCase):
         )
         connection.close()
         self.httpd.server_close()
-    
+
     def test_mock_exists_no_content_type(self):
         connection = HTTPConnection(*self.SERVER_ADDRESS)
         connection.request('GET', '/test-no-content-type')
@@ -213,7 +213,7 @@ class TestHttpHandlers(unittest.TestCase):
 
         connection.close()
         self.httpd.server_close()
-    
+
     def test_mock_exists_no_server_header(self):
         connection = HTTPConnection(*self.SERVER_ADDRESS)
         connection.request('GET', '/test-no-server-header')
@@ -226,10 +226,10 @@ class TestHttpHandlers(unittest.TestCase):
         headers = response.getheaders()
         self.assertEqual(headers[1][0], 'Server')
         self.assertIn('Mocker/', headers[1][1])
-        
+
         connection.close()
         self.httpd.server_close()
-    
+
     def test_mock_exists_no_date_header(self):
         connection = HTTPConnection(*self.SERVER_ADDRESS)
         connection.request('GET', '/test-no-server-header')
@@ -241,7 +241,7 @@ class TestHttpHandlers(unittest.TestCase):
 
         headers = response.getheaders()
         self.assertEqual(headers[2][0], 'Date')
-        
+
         connection.close()
         self.httpd.server_close()
 
@@ -275,10 +275,10 @@ class TestHttpHandlers(unittest.TestCase):
         headers = response.getheaders()
         self.assertEqual(headers[1][0], 'Server')
         self.assertIn('MockerCustom', headers[1][1])
-        
+
         connection.close()
         self.httpd.server_close()
-    
+
     def test_mock_exists_custom_date_header(self):
         connection = HTTPConnection(*self.SERVER_ADDRESS)
         connection.request('GET', '/test-custom-date-header')
@@ -291,6 +291,6 @@ class TestHttpHandlers(unittest.TestCase):
         headers = response.getheaders()
         self.assertEqual(headers[1][0], 'Date')
         self.assertIn('20180201', headers[1][1])
-        
+
         connection.close()
         self.httpd.server_close()
