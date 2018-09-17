@@ -47,9 +47,13 @@ setup(
         ]
     },
     install_requires=[
-        'aiohttp==3.4.4',
-        'cchardet==2.1.1',
-        'aiodns==1.1.1',
+        'aiohttp',
+        'cchardet',
+        'aiodns',
     ],
-    extras_require={},
+    extras_require={
+        'dev': [
+            'tox',
+        ]
+    },
 )
