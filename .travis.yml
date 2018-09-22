@@ -5,6 +5,7 @@ matrix:
   include:
     - os: linux
       dist: xenial
+      sudo: true
     - language: generic
       os: osx
       before_install:
