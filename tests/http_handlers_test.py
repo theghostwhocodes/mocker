@@ -129,177 +129,158 @@ class TestHttpHandlers(unittest.TestCase):
 
             loop.run_until_complete(test())
 
-    @unittest.skip
     def test_mock_does_not_exists(self):
-        connection = HTTPConnection(*self.SERVER_ADDRESS)
-        connection.request('GET', '/test-not-exists')
-        self.httpd.handle_request()
-        response = connection.getresponse()
+        with loop_context() as loop:
+            async def test():
+                async with TestClient(self.test_server, loop=loop) as client:
+                    # nonlocal client
+                    response = await client.get('/test-not-exists')
 
-        self.assertEqual(response.status, 404)
-        self.assertEqual(response.reason, 'Not Found')
+                    self.assertEqual(response.status, 404)
+                    self.assertEqual(response.reason, 'Not Found')
 
-        headers = response.getheaders()
-        self.assertEqual(headers[0][0], 'Content-Type')
-        self.assertEqual(headers[0][1], 'application/json')
-        self.assertEqual(headers[1][0], 'Server')
-        self.assertIn('Mocker/', headers[1][1])
-        connection.close()
-        self.httpd.server_close()
+                    headers = response.headers
+                    self.assertEqual(headers['Content-Type'], 'application/json; charset=utf-8')
+                    self.assertIn('Mocker/', headers['Server'])
 
-    @unittest.skip
+            loop.run_until_complete(test())
+
     def test_mock_exists_with_no_response_key(self):
-        connection = HTTPConnection(*self.SERVER_ADDRESS)
-        connection.request('GET', '/test-no-response')
-        self.httpd.handle_request()
-        response = connection.getresponse()
+        with loop_context() as loop:
+            async def test():
+                async with TestClient(self.test_server, loop=loop) as client:
+                    # nonlocal client
+                    response = await client.get('/test-no-response')
 
-        self.assertEqual(response.status, 500)
-        self.assertEqual(response.reason, 'Internal Server Error')
+                    self.assertEqual(response.status, 500)
+                    self.assertEqual(response.reason, 'Internal Server Error')
 
-        headers = response.getheaders()
-        self.assertEqual(headers[0][0], 'Content-Type')
-        self.assertEqual(headers[0][1], 'application/json')
-        self.assertEqual(headers[1][0], 'Server')
-        self.assertIn('Mocker/', headers[1][1])
+                    headers = response.headers
+                    self.assertEqual(headers['Content-Type'], 'application/json; charset=utf-8')
+                    self.assertIn('Mocker/', headers['Server'])
 
-        response_json = json.loads(response.read().decode('utf-8'))
-        self.assertDictEqual(
-            response_json,
-            {
-                'message': 'You must specify a "response" key in your mock'
-            }
-        )
-        connection.close()
-        self.httpd.server_close()
+                    response_json = await response.json()
+                    self.assertDictEqual(
+                        response_json,
+                        {
+                            'message': 'You must specify a "response" key in your mock'
+                        }
+                    )
 
-    @unittest.skip
+            loop.run_until_complete(test())
+
     def test_mock_exists_but_invalid_json(self):
-        connection = HTTPConnection(*self.SERVER_ADDRESS)
-        connection.request('GET', '/test-invalid-json')
-        self.httpd.handle_request()
-        response = connection.getresponse()
+        with loop_context() as loop:
+            async def test():
+                async with TestClient(self.test_server, loop=loop) as client:
+                    # nonlocal client
+                    response = await client.get('/test-invalid-json')
 
-        self.assertEqual(response.status, 500)
-        self.assertEqual(response.reason, 'Internal Server Error')
+                    self.assertEqual(response.status, 500)
+                    self.assertEqual(response.reason, 'Internal Server Error')
 
-        headers = response.getheaders()
-        self.assertEqual(headers[0][0], 'Content-Type')
-        self.assertEqual(headers[0][1], 'application/json')
-        self.assertEqual(headers[1][0], 'Server')
-        self.assertIn('Mocker/', headers[1][1])
+                    headers = response.headers
+                    self.assertEqual(headers['Content-Type'], 'application/json; charset=utf-8')
+                    self.assertIn('Mocker/', headers['Server'])
 
-        response_json = json.loads(response.read().decode('utf-8'))
-        self.assertDictEqual(
-            response_json,
-            {
-                'message': 'Mock file is not a valid JSON'
-            }
-        )
-        connection.close()
-        self.httpd.server_close()
+                    response_json = await response.json()
+                    self.assertDictEqual(
+                        response_json,
+                        {
+                            'message': 'Mock file is not a valid JSON'
+                        }
+                    )
 
-    @unittest.skip
+            loop.run_until_complete(test())
+
     def test_mock_exists_no_content_type(self):
-        connection = HTTPConnection(*self.SERVER_ADDRESS)
-        connection.request('GET', '/test-no-content-type')
-        self.httpd.handle_request()
-        response = connection.getresponse()
+        with loop_context() as loop:
+            async def test():
+                async with TestClient(self.test_server, loop=loop) as client:
+                    # nonlocal client
+                    response = await client.get('/test-no-content-type')
 
-        self.assertEqual(response.status, 200)
-        self.assertEqual(response.reason, 'OK')
+                    self.assertEqual(response.status, 200)
+                    self.assertEqual(response.reason, 'OK')
 
-        headers = response.getheaders()
-        self.assertEqual(headers[0][0], 'Content-Type')
-        self.assertEqual(headers[0][1], 'application/json')
-        self.assertEqual(headers[1][0], 'Server')
-        self.assertIn('Mocker/', headers[1][1])
+                    headers = response.headers
+                    self.assertEqual(headers['Content-Type'], 'application/json; charset=utf-8')
+                    self.assertIn('Mocker/', headers['Server'])
 
-        connection.close()
-        self.httpd.server_close()
+            loop.run_until_complete(test())
 
-    @unittest.skip
     def test_mock_exists_no_server_header(self):
-        connection = HTTPConnection(*self.SERVER_ADDRESS)
-        connection.request('GET', '/test-no-server-header')
-        self.httpd.handle_request()
-        response = connection.getresponse()
+        with loop_context() as loop:
+            async def test():
+                async with TestClient(self.test_server, loop=loop) as client:
+                    # nonlocal client
+                    response = await client.get('/test-no-server-header')
 
-        self.assertEqual(response.status, 200)
-        self.assertEqual(response.reason, 'OK')
+                    self.assertEqual(response.status, 200)
+                    self.assertEqual(response.reason, 'OK')
 
-        headers = response.getheaders()
-        self.assertEqual(headers[1][0], 'Server')
-        self.assertIn('Mocker/', headers[1][1])
+                    headers = response.headers
+                    self.assertIn('Mocker/', headers['Server'])
 
-        connection.close()
-        self.httpd.server_close()
+            loop.run_until_complete(test())
 
-    @unittest.skip
     def test_mock_exists_no_date_header(self):
-        connection = HTTPConnection(*self.SERVER_ADDRESS)
-        connection.request('GET', '/test-no-server-header')
-        self.httpd.handle_request()
-        response = connection.getresponse()
+        with loop_context() as loop:
+            async def test():
+                async with TestClient(self.test_server, loop=loop) as client:
+                    # nonlocal client
+                    response = await client.get('/test-no-server-header')
 
-        self.assertEqual(response.status, 200)
-        self.assertEqual(response.reason, 'OK')
+                    self.assertEqual(response.status, 200)
+                    self.assertEqual(response.reason, 'OK')
 
-        headers = response.getheaders()
-        self.assertEqual(headers[2][0], 'Date')
+                    headers = response.headers
+                    self.assertIn('Date', headers)
 
-        connection.close()
-        self.httpd.server_close()
+            loop.run_until_complete(test())
 
-    @unittest.skip
     def test_mock_exists_custom_content_type(self):
-        connection = HTTPConnection(*self.SERVER_ADDRESS)
-        connection.request('GET', '/test-custom-content-type')
-        self.httpd.handle_request()
-        response = connection.getresponse()
+        with loop_context() as loop:
+            async def test():
+                async with TestClient(self.test_server, loop=loop) as client:
+                    # nonlocal client
+                    response = await client.get('/test-custom-content-type')
 
-        self.assertEqual(response.status, 200)
-        self.assertEqual(response.reason, 'OK')
+                    self.assertEqual(response.status, 200)
+                    self.assertEqual(response.reason, 'OK')
 
-        headers = response.getheaders()
-        self.assertEqual(headers[0][0], 'Content-Type')
-        self.assertEqual(headers[0][1], 'application/mocker')
-        self.assertEqual(headers[1][0], 'Server')
-        self.assertIn('Mocker/', headers[1][1])
+                    headers = response.headers
+                    self.assertEqual(headers['Content-Type'], 'application/mocker; charset=utf-8')
+                    self.assertIn('Mocker/', headers['Server'])
 
-        connection.close()
-        self.httpd.server_close()
+            loop.run_until_complete(test())
 
-    @unittest.skip
     def test_mock_exists_custom_server_header(self):
-        connection = HTTPConnection(*self.SERVER_ADDRESS)
-        connection.request('GET', '/test-custom-server-header')
-        self.httpd.handle_request()
-        response = connection.getresponse()
+        with loop_context() as loop:
+            async def test():
+                async with TestClient(self.test_server, loop=loop) as client:
+                    # nonlocal client
+                    response = await client.get('/test-custom-server-header')
 
-        self.assertEqual(response.status, 200)
-        self.assertEqual(response.reason, 'OK')
+                    self.assertEqual(response.status, 200)
+                    self.assertEqual(response.reason, 'OK')
 
-        headers = response.getheaders()
-        self.assertEqual(headers[1][0], 'Server')
-        self.assertIn('MockerCustom', headers[1][1])
+                    headers = response.headers
+                    self.assertIn('MockerCustom', headers['Server'])
 
-        connection.close()
-        self.httpd.server_close()
+            loop.run_until_complete(test())
 
-    @unittest.skip
     def test_mock_exists_custom_date_header(self):
-        connection = HTTPConnection(*self.SERVER_ADDRESS)
-        connection.request('GET', '/test-custom-date-header')
-        self.httpd.handle_request()
-        response = connection.getresponse()
+        with loop_context() as loop:
+            async def test():
+                async with TestClient(self.test_server, loop=loop) as client:
+                    # nonlocal client
+                    response = await client.get('/test-custom-date-header')
 
-        self.assertEqual(response.status, 200)
-        self.assertEqual(response.reason, 'OK')
+                    self.assertEqual(response.status, 200)
+                    self.assertEqual(response.reason, 'OK')
 
-        headers = response.getheaders()
-        self.assertEqual(headers[1][0], 'Date')
-        self.assertIn('20180201', headers[1][1])
+                    headers = response.headers
+                    self.assertEqual(headers['Date'], '20180201')
 
-        connection.close()
-        self.httpd.server_close()
+            loop.run_until_complete(test())
