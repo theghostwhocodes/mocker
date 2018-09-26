@@ -47,7 +47,13 @@ def main():
     if os.path.exists(args.data_path):
         app = web.Application()
         app.add_routes([
-            web.get('/{tail:.*}', handle_factory(args.data_path))
+            web.get('/{tail:.*}', handle_factory(args.data_path)),
+            web.post('/{tail:.*}', handle_factory(args.data_path)),
+            web.put('/{tail:.*}', handle_factory(args.data_path)),
+            web.patch('/{tail:.*}', handle_factory(args.data_path)),
+            web.head('/{tail:.*}', handle_factory(args.data_path)),
+            web.delete('/{tail:.*}', handle_factory(args.data_path)),
+            web.options('/{tail:.*}', handle_factory(args.data_path)),
         ])
         try:
             web.run_app(app, host=args.host, port=args.port)
