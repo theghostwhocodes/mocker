@@ -1,21 +1,17 @@
-# coding: utf-8
-"""Mocker main module"""
-
-from http.server import HTTPServer
 import argparse
 import logging
 import os
+
 import pkg_resources
+from aiohttp import web
 
-from mocker.http_handlers import MainRequestHandlerFactory
-
+from mocker.http_handlers import handle_factory
 
 TCP_PORT = 8080
 HOST = '127.0.0.1'
 
 
 def main():
-    """Mocker startup function"""
     parser = argparse.ArgumentParser(description='HTTP data mocker')
     parser.add_argument('data_path', help='The data folder')
     parser.add_argument(
@@ -49,16 +45,23 @@ def main():
     logging.basicConfig(filename=args.log_file, level=logging_level)
 
     if os.path.exists(args.data_path):
-        server_address = (args.host, args.port)
-        print('Starting mocker HTTP server at {}:{}'.format(*server_address))
-        MainRequestHandler = MainRequestHandlerFactory(args.data_path)
-        httpd = HTTPServer(server_address, MainRequestHandler)
+        app = web.Application()
+        app.add_routes([
+            web.get('/{tail:.*}', handle_factory(args.data_path)),
+            web.post('/{tail:.*}', handle_factory(args.data_path)),
+            web.put('/{tail:.*}', handle_factory(args.data_path)),
+            web.patch('/{tail:.*}', handle_factory(args.data_path)),
+            web.head('/{tail:.*}', handle_factory(args.data_path)),
+            web.delete('/{tail:.*}', handle_factory(args.data_path)),
+            web.options('/{tail:.*}', handle_factory(args.data_path)),
+        ])
         try:
-            httpd.serve_forever()
+            web.run_app(app, host=args.host, port=args.port)
         except KeyboardInterrupt:
-            print("Exiting Mocker...")
+            print('Exiting Mocker...')
     else:
         print('Folder {} not found'.format(args.data_path))
+
 
 if __name__ == '__main__':
     main()

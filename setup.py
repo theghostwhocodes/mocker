@@ -34,7 +34,7 @@ setup(
         'Operating System :: Unix',
         'Operating System :: POSIX',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: Implementation :: CPython',
         'Topic :: Utilities',
     ],
@@ -43,9 +43,18 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'mocker=main:main'
+            'mocker=main:main',
         ]
     },
-    install_requires=[],
-    extras_require={},
+    install_requires=[
+        'aiohttp',
+        'cchardet',
+        'aiodns',
+    ],
+    extras_require={
+        'dev': [
+            'tox',
+            'pyinstaller',
+        ]
+    },
 )
