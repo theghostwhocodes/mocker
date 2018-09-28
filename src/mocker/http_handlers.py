@@ -9,7 +9,6 @@ from aiohttp import web
 import mocker.utils
 from mocker.exceptions import JSONKeyMissingException
 
-
 __version__ = pkg_resources.require("mocker")[0].version
 
 

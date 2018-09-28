@@ -1,11 +1,9 @@
-import json
 import unittest
-from http.client import HTTPConnection
-from http.server import HTTPServer
+
+from aiohttp import web
+from aiohttp.test_utils import TestClient, TestServer, loop_context
 
 from mocker.http_handlers import handle_factory
-from aiohttp.test_utils import TestClient,TestServer, loop_context
-from aiohttp import web
 
 
 class TestHttpHandlers(unittest.TestCase):
