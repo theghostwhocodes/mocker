@@ -9,7 +9,7 @@ from setuptools import setup
 
 setup(
     name='mocker',
-    version='0.2.0',
+    version='0.3.0',
     license='MIT',
     description='A simple HTTP mock server inspired by Saray',
     author='Paolo Ferretti',
