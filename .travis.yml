@@ -22,9 +22,8 @@ script:
   - tox
 before_deploy:
   - pip install pipenv
-  - pipenv install
-  - pipenv install -d
-  - pipenv run pyinstaller main.spec
+  - pip install .[dev]
+  - pyinstaller main.spec
   - tar -C dist/mocker -cvzf mocker-${TRAVIS_TAG}-${TRAVIS_OS_NAME}.tar.gz .
 deploy:
   provider: releases
