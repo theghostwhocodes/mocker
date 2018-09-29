@@ -11,18 +11,18 @@ matrix:
       before_install:
         - brew update
         - brew upgrade python
-        - pip install -U pip
+        - pip3 install -U pip
 #        - pip3 install -U virtualenv
 #        - python3 -m venv env
 #        - source env/bin/activate
       sudo: true
 install:
-  - pip install tox
+  - pip3 install tox
 script:
   - tox
 before_deploy:
-  - pip install pipenv
-  - pip install .[dev]
+  - pip3 install pipenv
+  - pip3 install .[dev]
   - pyinstaller main.spec
   - tar -C dist/mocker -cvzf mocker-${TRAVIS_TAG}-${TRAVIS_OS_NAME}.tar.gz .
 deploy:
